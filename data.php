@@ -12,9 +12,19 @@ if (isset($_GET['id']))
 {
 	$cards = json_decode(file_get_contents('cards.json'), true);
 
-	if (array_key_exists($_GET['id'], $cards))
+	$ids = explode(',', $_GET['id']);
+	$ret = [];
+	foreach($ids as $id)
 	{
-		echo json_encode($cards[$_GET['id']]);
+		if (array_key_exists($id, $cards))
+		{
+			$ret[$id] = $cards[$id];
+		}
+	}
+
+	if (count($ret) > 0)
+	{
+		echo json_encode($ret);
 	}
 	else
 	{
