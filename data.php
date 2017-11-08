@@ -4,6 +4,7 @@ header('Content-Type: application/json');
 $name_overrides = [
 	"brann" => "Brann Bronzebeard",
 	"yogg" => "Yogg-Saron, Hope's End",
+	"yoggsaron" => "Yogg-Saron, Hope's End",
 	"yshaarj" => "Y'Shaarj, Rage Unbound",
 ];
 
@@ -33,10 +34,12 @@ else
 		$search_name = preg_replace("/[^A-Za-z0-9]/", '', strtolower($name_overrides[$search_name]));
 	}
 
-	echo json_encode(getCard($search_name));
+	$collectible_only = isset($_GET['collectible']) && $_GET['collectible'] != 0;
+
+	echo json_encode(getCard($search_name, $collectible_only));
 }
 
-function getCard($search_name)
+function getCard($search_name, $collectible_only)
 {
 	$cards = json_decode(file_get_contents('cards.json'), true);
 	$min_leven = PHP_INT_MAX;
@@ -44,6 +47,12 @@ function getCard($search_name)
 
 	foreach ($cards as $id => $card)
 	{
+		// skip if we ignore token cards this card isn't collectible
+		if ($collectible_only && !$card['collectible'])
+		{
+			continue;
+		}
+
 		$testing_name = preg_replace("/[^A-Za-z0-9]/", '', strtolower($card['name']));
 
 		// calculate difference between cards without considering removals
