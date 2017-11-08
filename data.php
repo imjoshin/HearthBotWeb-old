@@ -48,7 +48,7 @@ function getCard($search_name, $collectible_only)
 	foreach ($cards as $id => $card)
 	{
 		// skip if we ignore token cards this card isn't collectible
-		if ($collectible_only && !$card['collectible'])
+		if ($collectible_only && !$card['collectible'] || $card['cost'] == "hero")
 		{
 			continue;
 		}
