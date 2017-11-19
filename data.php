@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once "./auth.php";
+require_once "./php/auth.php";
 
 $name_overrides = [
 	"brann" => "Brann Bronzebeard",
@@ -97,5 +97,6 @@ function getCard($search_name, $collectible_only)
 		return $cards[$min_level_index];
 	}
 
+	dbQuery("INSERT INTO hearthsearch (search, card_id) VALUES (?, ?)", [$_GET['name'], -1]);
 	return ['error' => 'Card not found.'];
 }

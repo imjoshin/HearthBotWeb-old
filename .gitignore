@@ -1,1 +1,3 @@
-auth.php
+php/auth.php
+node_modules
+.sass-cache
