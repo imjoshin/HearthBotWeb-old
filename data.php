@@ -5,6 +5,7 @@ require_once "./php/auth.php";
 $name_overrides = [
 	"brann" => "Brann Bronzebeard",
 	"yogg" => "Yogg-Saron, Hope's End",
+	"yogg saron" => "Yogg-Saron, Hope's End",
 	"yoggsaron" => "Yogg-Saron, Hope's End",
 	"yshaarj" => "Y'Shaarj, Rage Unbound",
 ];
@@ -38,11 +39,11 @@ else if (!isset($_GET['name']) || !preg_match('/[0-9a-zA-Z]*/', $_GET['name']))
 }
 else
 {
-	$search_name = preg_replace("/[^A-Za-z0-9]/", '', strtolower($_GET['name']));
+	$search_name = preg_replace("/[^A-Za-z0-9 ]/", '', strtolower($_GET['name']));
 
 	if (array_key_exists($search_name, $name_overrides))
 	{
-		$search_name = preg_replace("/[^A-Za-z0-9]/", '', strtolower($name_overrides[$search_name]));
+		$search_name = preg_replace("/[^A-Za-z0-9 ]/", '', strtolower($name_overrides[$search_name]));
 	}
 
 	$collectible_only = isset($_GET['collectible']) && $_GET['collectible'] != 0;
@@ -66,7 +67,7 @@ function getCard($search_name, $collectible_only)
 			continue;
 		}
 
-		$testing_name = preg_replace("/[^A-Za-z0-9]/", '', strtolower($card['name']));
+		$testing_name = preg_replace("/[^A-Za-z0-9 ]/", '', strtolower($card['name']));
 
 		// calculate difference between cards without considering removals
 		$leven = levenshtein(strtolower($testing_name), strtolower($search_name), 1, 1, 0);
@@ -76,7 +77,7 @@ function getCard($search_name, $collectible_only)
 		{
 			if ($leven == $min_leven)
 			{
-				$selected_name = preg_replace("/[^A-Za-z0-9]/", '', strtolower($cards[$min_level_index]['name']));
+				$selected_name = preg_replace("/[^A-Za-z0-9 ]/", '', strtolower($cards[$min_level_index]['name']));
 
 				// if they are equal, take the shorter name
 				if (strlen($testing_name) < strlen($selected_name))
