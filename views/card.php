@@ -10,6 +10,20 @@
 			<input class="field-input" id='set' name='set' type='text' maxlength="64" value="Kobolds and Catacombs">
 		</div>
 		<div class="field">
+			<div class="field-label">Class</div>
+			<select class="field-label" id='class' name='class'>
+				<option>Druid</option>
+				<option>Hunter</option>
+				<option>Mage</option>
+				<option>Paladin</option>
+				<option>Priest</option>
+				<option>Rogue</option>
+				<option>Shaman</option>
+				<option>Warlock</option>
+				<option>Warrior</option>
+			</select>
+		</div>
+		<div class="field">
 			<div class="field-label">Type</div>
 			<select class="field-label" id='type' name='type'>
 				<option>Minion</option>
