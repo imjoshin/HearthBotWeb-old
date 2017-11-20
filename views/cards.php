@@ -1,5 +1,9 @@
-<div class="container">
+<div class="container cards-container">
 	<div class="btn btn-orange btn-add-card">+</div>
+	<div class='card card-template' data-fields='' data-id=''>
+		<div class='card-image' style=''></div>
+		<div class='card-title'></div>
+	</div>
 	<?php
 		require_once('php/card.php');
 

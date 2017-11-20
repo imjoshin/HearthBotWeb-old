@@ -18,6 +18,10 @@
 	&:hover {
 		cursor: pointer;
 	}
+
+	&-template {
+		display: none;
+	}
 }
 
 .card-container {

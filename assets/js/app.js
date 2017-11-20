@@ -36,9 +36,19 @@ $().ready(function() {
 			},
 			success: function(data) {
 				if (data.success) {
-					console.log(data.output['card']);
 					var fields = $.parseJSON(data.output);
-					var card = $('.card[data-id=' + fields['id'] + ']');
+
+					if (data.new) {
+						// TODO: actually handle new card display
+						location.reload();
+
+						// var card = $('.card-template').clone();
+						// card.removeClass('.card-template');
+						// card.show();
+					} else {
+						var card = $('.card[data-id=' + fields['id'] + ']');
+					}
+
 					card.attr('data-fields', data.output);
 					card.find('.card-image').css('background-image', 'url(' + fields['img'] + ')');
 					card.find('.card-title').text(fields['name']);
