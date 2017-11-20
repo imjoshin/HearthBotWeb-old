@@ -18,7 +18,6 @@ class Card
 
 	public static function saveCard($form)
 	{
-		error_log(json_encode($form));
 		if (strlen($form['name']) == 0 || strlen($form['text']) == 0 || strlen($form['img']) == 0 || strlen($form['cost']) == 0 || strlen($form['set']) == 0)
 		{
 			return array('success'=>false, 'output'=>'Check all fields.');

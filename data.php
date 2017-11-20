@@ -52,7 +52,9 @@ else
 
 function getCard($search_name, $collectible_only)
 {
-	$cards = json_decode(file_get_contents('cards.json'), true);
+	$json_cards = json_decode(file_get_contents('cards.json'), true);
+	$db_cards = getDBCards();
+	$cards = array_merge($json_cards, $db_cards);
 	$min_leven = PHP_INT_MAX;
 	$min_level_index = -1;
 
@@ -99,4 +101,25 @@ function getCard($search_name, $collectible_only)
 
 	dbQuery("INSERT INTO hearthsearch (search, card_id) VALUES (?, ?)", [$_GET['name'], -1]);
 	return ['error' => 'Card not found.'];
+}
+
+function getDBCards()
+{
+	$cards = dbQuery("SELECT * FROM hearthcard WHERE expiration > CURDATE()");
+	if (!is_array($cards))
+	{
+		return [];
+	}
+
+	$ret = [];
+	foreach($cards as $card)
+	{
+		unset($card['expiration']);
+		unset($card['added_by']);
+		unset($card['modified_by']);
+		$card['collectible'] = $card['collectible'] == 1;
+		$ret[$card['id'] + 1000000] = $card;
+	}
+
+	return $ret;
 }
