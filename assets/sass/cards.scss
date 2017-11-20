@@ -28,15 +28,18 @@
 	width: 90%;
 	height: 90%;
 	max-width: 300px;
-	max-height: 400px;
+	max-height: 500px;
 
 	margin: 0 auto;
-	background-color: $white;
+	background-color: transparentize($gray, .008);
 	border-radius: 10px;
 	padding: 25px;
-	padding-bottom: 60px;
 	text-align: center;
 	margin-top: 30px;
+
+	-webkit-box-shadow: 7px 7px 35px 0px rgba(0,0,0,0.3);
+	-moz-box-shadow: 7px 7px 35px 0px rgba(0,0,0,0.3);
+	box-shadow: 7px 7px 35px 0px rgba(0,0,0,0.3);
 
 	select {
 		margin: 0 auto;

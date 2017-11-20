@@ -7,7 +7,7 @@
 		</div>
 		<div class="field">
 			<div class="field-label">Set</div>
-			<input class="field-input" id='set' name='set' type='text' maxlength="64">
+			<input class="field-input" id='set' name='set' type='text' maxlength="64" value="Kobolds and Catacombs">
 		</div>
 		<div class="field">
 			<div class="field-label">Type</div>
@@ -43,6 +43,11 @@
 			<div class="field-label field-label-inline">Collectible</div>
 			<input class="field-input" id='collectible' name='collectible' type='checkbox'>
 		</div>
+		<div class="field">
+			<div class="field-label">Expiration</div>
+			<input class="field-input" id='expiration' name='expiration' type='date' value='2017-12-15'>
+		</div>
+		<input id="id" name="id" type="hidden" value='-1'>
 		<div class="btn btn-save">Save</div>
 	</div>
 </div>

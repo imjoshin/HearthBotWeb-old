@@ -1,6 +1,7 @@
 <?php
 
 require_once('user.php');
+require_once('card.php');
 require_once('auth.php');
 
 if (!isset($_POST['call']))
@@ -33,8 +34,8 @@ switch(strtolower($_POST['call']))
 	case 'logout':
 		$ret = User::logout();
 		break;
-	case 'save_settings':
-		$ret = Game::saveSettings($_POST);
+	case 'save_card':
+		$ret = Card::saveCard($_POST);
 		break;
 }
 

@@ -4,7 +4,7 @@
 // session_start();
 // session_unset();
 // session_destroy();
-	if (isset($_SESSION['id']))
+	if (isset($_SESSION['user_id']))
 	{
 		include 'views/cards.php';
 		include 'views/card.php';

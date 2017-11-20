@@ -12,7 +12,7 @@ class User
 		}
 
 		session_start();
-		$_SESSION['id'] = $users[0]['id'];
+		$_SESSION['user_id'] = $users[0]['id'];
 
 		return array('success'=>true);
 	}
