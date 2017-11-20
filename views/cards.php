@@ -1,4 +1,5 @@
 <div class="container">
+	<div class="btn btn-orange btn-add-card">+</div>
 	<?php
 		require_once('php/card.php');
 

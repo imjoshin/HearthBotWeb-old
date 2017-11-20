@@ -7,6 +7,7 @@
 	if (isset($_SESSION['id']))
 	{
 		include 'views/cards.php';
+		include 'views/card.php';
 	}
 	else
 	{
