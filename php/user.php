@@ -1,15 +1,18 @@
 <?php
 
-require_once(BASE_PATH . "triton/client.php");
-
 class User
 {
 	public static function login($username, $password)
 	{
+		$users = dbQuery("SELECT * FROM hearthuser WHERE username = ? AND password = MD5(?)", [$username, $password]);
+
+		if (!is_array($users) || empty($users))
+		{
+			return array('success'=>false, 'output'=>'Invalid login.');
+		}
 
 		session_start();
-
-		$_SESSION['id'] = $user[0]['id'];
+		$_SESSION['id'] = $users[0]['id'];
 
 		return array('success'=>true);
 	}

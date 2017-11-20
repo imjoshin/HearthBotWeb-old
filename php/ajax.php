@@ -1,8 +1,7 @@
 <?php
 
-require_once('constants.php');
-require_once(BASE_PATH . 'utils.php');
-require_once(BASE_PATH . 'functions/user.php');
+require_once('user.php');
+require_once('auth.php');
 
 if (!isset($_POST['call']))
 {
@@ -41,4 +40,32 @@ switch(strtolower($_POST['call']))
 
 echo json_encode($ret);
 
+function unserializeForm($array)
+{
+	$data = array();
+	foreach(explode('&', $array) as $value)
+	{
+		$value1 = explode('=', $value);
+		$key = urldecode($value1[0]);
+		$value = urldecode($value1[1]);
+		if (preg_match('/\[.+\]/', $key, $match))
+		{
+			$arrayName = str_replace($match[0], '', $key);
+			$arrayKey = str_replace(array('[', ']'), '', $match[0]);
+
+			if (!isset($data[$arrayName]))
+			{
+				$data[$arrayName] = array();
+			}
+
+			$data[$arrayName][$arrayKey] = $value;
+		}
+		else
+		{
+			$data[$key] = $value;
+		}
+	}
+
+	return $data;
+}
 ?>

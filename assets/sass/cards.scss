@@ -1,0 +1,21 @@
+.card {
+    margin: 10px;
+	border-radius: 2px;
+	display: inline-block;
+
+	&-image {
+		height: 200px;
+	    width: 140px;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	&-text {
+
+	}
+
+	&:hover {
+		cursor: pointer;
+	}
+}
