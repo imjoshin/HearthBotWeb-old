@@ -11,7 +11,7 @@ if (!isset($_POST['call']))
 
 session_start();
 
-if (!isset($_SESSION['id']) && !in_array(strtolower($_POST['call']), array("login", "logout")))
+if (!isset($_SESSION['user_id']) && !in_array(strtolower($_POST['call']), array("login", "logout")))
 {
 	$ret = array("success"=>false, "output"=>array(
 		"message"=>"Session expired. Please refresh."

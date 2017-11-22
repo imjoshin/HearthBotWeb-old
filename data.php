@@ -96,11 +96,11 @@ function getCard($search_name, $collectible_only)
 
 	if ($min_level_index >= 0)
 	{
-		dbQuery("INSERT INTO hearthsearch (search, card_id) VALUES (?, ?)", [$_GET['name'], $min_level_index]);
+		dbQuery("INSERT INTO search (search, card_id) VALUES (?, ?)", [$_GET['name'], $min_level_index]);
 		return $cards[$min_level_index];
 	}
 
-	dbQuery("INSERT INTO hearthsearch (search, card_id) VALUES (?, ?)", [$_GET['name'], -1]);
+	dbQuery("INSERT INTO search (search, card_id) VALUES (?, ?)", [$_GET['name'], -1]);
 	return ['error' => 'Card not found.'];
 }
 

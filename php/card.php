@@ -44,7 +44,7 @@ class Card
 		else
 		{
 			dbQuery(
-				"INSERT INTO card (name, class, `set`, type, text, rarity, cost, img, collectible, expiration, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				"INSERT INTO card (name, class, `set`, type, text, rarity, cost, img, collectible, expiration, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id']]
 			);
 
