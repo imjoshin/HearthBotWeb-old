@@ -106,7 +106,7 @@ function getCard($search_name, $collectible_only)
 
 function getDBCards()
 {
-	$cards = dbQuery("SELECT * FROM hearthcard WHERE expiration > CURDATE()");
+	$cards = dbQuery("SELECT * FROM card WHERE expiration > CURDATE()");
 	if (!is_array($cards))
 	{
 		return [];

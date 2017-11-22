@@ -6,7 +6,7 @@ class Card
 {
 	public static function getCards()
 	{
-		$cards = dbQuery("SELECT * FROM hearthcard");
+		$cards = dbQuery("SELECT * FROM card");
 
 		if (!is_array($cards))
 		{
@@ -34,21 +34,21 @@ class Card
 		if ($form['id'] != -1)
 		{
 			dbQuery(
-				"UPDATE hearthcard SET name = ?, class = ?, `set` = ?, type = ?, text = ?, rarity = ?, cost = ?, img = ?, collectible = ?, expiration = ?, modified_by = ? WHERE id = ?",
+				"UPDATE card SET name = ?, class = ?, `set` = ?, type = ?, text = ?, rarity = ?, cost = ?, img = ?, collectible = ?, expiration = ?, modified_by = ? WHERE id = ?",
 				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id'], $form['id']]
 			);
 
-			$card = dbQuery("SELECT * FROM hearthcard WHERE id = ?", [$form['id']]);
+			$card = dbQuery("SELECT * FROM card WHERE id = ?", [$form['id']]);
 			return array('success'=>true, 'output'=>json_encode($card[0]));
 		}
 		else
 		{
 			dbQuery(
-				"INSERT INTO hearthcard (name, class, `set`, type, text, rarity, cost, img, collectible, expiration, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				"INSERT INTO card (name, class, `set`, type, text, rarity, cost, img, collectible, expiration, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id']]
 			);
 
-			$card = dbQuery("SELECT * FROM hearthcard ORDER BY id DESC LIMIT 1");
+			$card = dbQuery("SELECT * FROM card ORDER BY id DESC LIMIT 1");
 			return array(
 				'success'=>true,
 				'output'=>json_encode($card[0]),

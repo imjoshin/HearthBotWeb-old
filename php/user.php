@@ -4,7 +4,7 @@ class User
 {
 	public static function login($username, $password)
 	{
-		$users = dbQuery("SELECT * FROM hearthuser WHERE username = ? AND password = MD5(?)", [$username, $password]);
+		$users = dbQuery("SELECT * FROM user WHERE username = ? AND password = MD5(?)", [$username, $password]);
 
 		if (!is_array($users) || empty($users))
 		{
