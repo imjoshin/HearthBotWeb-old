@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Hearthstone Cards</title>
+  <title>HearthBot Cards</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
   <link rel="icon" href="img/icon.png">
   <link href="dist/css/app.css" rel="stylesheet" media="screen" />
