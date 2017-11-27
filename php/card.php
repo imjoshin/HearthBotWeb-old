@@ -6,7 +6,7 @@ class Card
 {
 	public static function getCards()
 	{
-		$cards = dbQuery("SELECT * FROM card");
+		$cards = dbQuery("SELECT * FROM card WHERE rtime IS NULL");
 
 		if (!is_array($cards))
 		{

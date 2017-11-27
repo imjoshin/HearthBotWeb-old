@@ -14,7 +14,9 @@
 			$encoded_fields = str_replace("'", "&#39", json_encode($card));
 			echo "
 				<div class='card' data-fields='" . $encoded_fields . "' data-id='{$card['id']}'>
-					<div class='card-image' style='background-image: url(\"" . $card['img'] . "\")'></div>
+					<div class='card-image' style='background-image: url(\"" . $card['img'] . "\")'>
+						<div class='card-delete'>x</div>
+					</div>
 					<div class='card-title'>{$card['name']}</div>
 				</div>
 			";
