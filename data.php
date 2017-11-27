@@ -57,7 +57,8 @@ function getCard($search_name, $collectible_only)
 	$db_cards = getDBCards();
 	$cards = array_merge($json_cards, $db_cards);
 	$min_leven = PHP_INT_MAX;
-	$min_level_index = -1;
+	$min_leven_index = -1;
+	$min_level_id = -1;
 
 	foreach ($cards as $id => $card)
 	{
@@ -77,27 +78,39 @@ function getCard($search_name, $collectible_only)
 		{
 			if ($leven == $min_leven)
 			{
-				$selected_name = preg_replace("/[^A-Za-z0-9 ]/", '', strtolower($cards[$min_level_index]['name']));
+				$selected_name = preg_replace("/[^A-Za-z0-9 ]/", '', strtolower($cards[$min_leven_index]['name']));
 
 				// if they are equal, take the shorter name
 				if (strlen($testing_name) < strlen($selected_name))
 				{
-					$min_level_index = $id;
+					$min_leven_index = $id;
 				}
 			}
 			else
 			{
 				// set the new selected card
 				$min_leven = $leven;
-				$min_level_index = $id;
+				$min_leven_index = $id;
 			}
 		}
 	}
 
-	if ($min_level_index >= 0)
+	$card = $cards[$min_leven_index];
+	$types = ['detail', 'card'];
+
+	if ($min_leven_index >= 0)
 	{
-		dbQuery("INSERT INTO search (search, card_id) VALUES (?, ?)", [$_GET['name'], $min_level_index]);
-		return $cards[$min_level_index];
+		// check if t is valid type
+		if (isset($_GET['t']) && in_array($_GET['t'], $types))
+		{
+			dbQuery("INSERT INTO search (search, card_id, type) VALUES (?, ?, ?)", [$_GET['name'], $card['id'], $_GET['t']]);
+		}
+		else
+		{
+			dbQuery("INSERT INTO search (search, card_id) VALUES (?, ?)", [$_GET['name'], $card['id']]);
+		}
+
+		return $card;
 	}
 
 	dbQuery("INSERT INTO search (search, card_id) VALUES (?, ?)", [$_GET['name'], -1]);
@@ -106,7 +119,7 @@ function getCard($search_name, $collectible_only)
 
 function getDBCards()
 {
-	$cards = dbQuery("SELECT * FROM card WHERE expiration > CURDATE()");
+	$cards = dbQuery("SELECT * FROM card WHERE expiration > CURDATE() AND rtime IS NULL");
 	if (!is_array($cards))
 	{
 		return [];
@@ -118,8 +131,12 @@ function getDBCards()
 		unset($card['expiration']);
 		unset($card['added_by']);
 		unset($card['modified_by']);
+		unset($card['ctime']);
+		unset($card['rtime']);
+
+		$card['id'] = 1000000 + $card['id'];
 		$card['collectible'] = $card['collectible'] == 1;
-		$ret[$card['id'] + 1000000] = $card;
+		$ret[] = $card;
 	}
 
 	return $ret;

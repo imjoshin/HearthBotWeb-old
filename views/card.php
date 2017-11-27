@@ -12,6 +12,7 @@
 		<div class="field">
 			<div class="field-label">Class</div>
 			<select class="field-label" id='class' name='class'>
+				<option>Neutral</option>
 				<option>Druid</option>
 				<option>Hunter</option>
 				<option>Mage</option>
