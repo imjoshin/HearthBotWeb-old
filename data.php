@@ -39,7 +39,7 @@ else if (!isset($_GET['name']) || !preg_match('/[0-9a-zA-Z]*/', $_GET['name']))
 }
 else
 {
-	$search_name = preg_replace("/[^A-Za-z0-9 ]/", '', strtolower($_GET['name']));
+	$search_name = trim(preg_replace("/[^A-Za-z0-9 ]/", '', strtolower($_GET['name'])));
 
 	if (array_key_exists($search_name, $name_overrides))
 	{
