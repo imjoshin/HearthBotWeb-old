@@ -56,4 +56,10 @@ class Card
 			);
 		}
 	}
+
+	public static function deleteCard($card_id)
+	{
+		dbQuery("UPDATE card SET rtime = NOW() WHERE id = ?", [$card_id]);
+		return array('success'=>true);
+	}
 }

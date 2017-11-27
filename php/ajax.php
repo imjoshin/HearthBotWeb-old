@@ -37,6 +37,9 @@ switch(strtolower($_POST['call']))
 	case 'save_card':
 		$ret = Card::saveCard($_POST);
 		break;
+	case 'delete_card':
+		$ret = Card::deleteCard($_POST['card_id']);
+		break;
 }
 
 echo json_encode($ret);

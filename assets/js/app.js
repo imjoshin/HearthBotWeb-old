@@ -1,6 +1,6 @@
 $().ready(function() {
-	$('.card').on('click', function() {
-		var fields = $.parseJSON($(this).attr('data-fields'));
+	$('.card-image').on('click', function() {
+		var fields = $.parseJSON($(this).parent().attr('data-fields'));
 
 		// Set fields on form
 		$.each(fields, function(input, value) {
@@ -54,6 +54,29 @@ $().ready(function() {
 					card.find('.card-title').text(fields['name']);
 
 					$('.modal-container').hide();
+				} else {
+					alert(data.output);
+				}
+			}
+		});
+	});
+
+	$('.card-delete').on('click', function(event) {
+		event.stopPropagation();
+
+		var card = $(this).parents('.card');
+        
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "php/ajax.php",
+			data: {
+				call: 'delete_card',
+				card_id: card.attr('data-id')
+			},
+			success: function(data) {
+				if (data.success) {
+					card.remove();
 				} else {
 					alert(data.output);
 				}
