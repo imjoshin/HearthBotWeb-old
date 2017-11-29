@@ -34,8 +34,8 @@ class Card
 		if ($form['id'] != -1)
 		{
 			dbQuery(
-				"UPDATE card SET name = ?, class = ?, `set` = ?, type = ?, text = ?, rarity = ?, cost = ?, img = ?, collectible = ?, expiration = ?, modified_by = ? WHERE id = ?",
-				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id'], $form['id']]
+				"UPDATE card SET name = ?, class = ?, `set` = ?, type = ?, text = ?, rarity = ?, cost = ?, attack = ?, health = ?, img = ?, collectible = ?, expiration = ?, modified_by = ? WHERE id = ?",
+				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['attack'], $form['health'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id'], $form['id']]
 			);
 
 			$card = dbQuery("SELECT * FROM card WHERE id = ?", [$form['id']]);
@@ -44,8 +44,8 @@ class Card
 		else
 		{
 			dbQuery(
-				"INSERT INTO card (name, class, `set`, type, text, rarity, cost, img, collectible, expiration, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id']]
+				"INSERT INTO card (name, class, `set`, type, text, rarity, cost, attack, health, img, collectible, expiration, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['attack'], $form['health'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id']]
 			);
 
 			$card = dbQuery("SELECT * FROM card ORDER BY id DESC LIMIT 1");

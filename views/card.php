@@ -51,6 +51,14 @@
 			<input class="field-input" id='cost' name='cost' type='number' min="0" max="30">
 		</div>
 		<div class="field">
+			<div class="field-label field-label-inline">Attack</div>
+			<input class="field-input" id='attack' name='attack' type='number' min="0" max="30">
+		</div>
+		<div class="field">
+			<div class="field-label field-label-inline">Health</div>
+			<input class="field-input" id='health' name='health' type='number' min="0" max="30">
+		</div>
+		<div class="field">
 			<div class="field-label">Image</div>
 			<input class="field-input" id='img' name='img' type='text' maxlength="512">
 		</div>
