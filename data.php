@@ -10,6 +10,14 @@ $name_overrides = [
 	"yshaarj" => "Y'Shaarj, Rage Unbound",
 ];
 
+$keys = dbQuery("SELECT * FROM `key` WHERE rtime IS NULL");
+$keys = array_column($keys, 'key');
+if (!isset($_GET['key']) || !in_array($_GET['key'], $keys))
+{
+	echo json_encode(["error" => "Invalid key."]);
+	return;
+}
+
 if (isset($_GET['id']))
 {
 	$cards = json_decode(file_get_contents('cards.json'), true);
@@ -96,20 +104,21 @@ function getCard($search_name, $collectible_only)
 	}
 
 	$card = $cards[$min_leven_index];
-	$types = ['detail', 'card'];
 
 	if ($min_leven_index >= 0)
 	{
-		// check if t is valid type
-		if (isset($_GET['t']) && in_array($_GET['t'], $types))
-		{
-			dbQuery("INSERT INTO search (search, card_id, type) VALUES (?, ?, ?)", [$_GET['name'], $card['id'], $_GET['t']]);
-		}
-		else
-		{
-			dbQuery("INSERT INTO search (search, card_id) VALUES (?, ?)", [$_GET['name'], $card['id']]);
-		}
-
+		dbQuery(
+			"INSERT INTO search (search, card_id, type, user, user_id, channel_id, `key`) VALUES (?, ?, ?, ?, ?, ?, ?)",
+			[
+				$_GET['name'],
+				$card['id'],
+				isset($_GET['t']) ? $_GET['t'] : null,
+				isset($_GET['u']) ? $_GET['u'] : null,
+				isset($_GET['uid']) ? $_GET['uid'] : null,
+				isset($_GET['cid']) ? $_GET['cid'] : null,
+				isset($_GET['key']) ? $_GET['key'] : null,
+			]
+		);
 		return $card;
 	}
 
