@@ -8,6 +8,7 @@ $name_overrides = [
 	"yogg saron" => "Yogg-Saron, Hope's End",
 	"yoggsaron" => "Yogg-Saron, Hope's End",
 	"yshaarj" => "Y'Shaarj, Rage Unbound",
+	"aya" => "Aya Blackpaw",
 ];
 
 $keys = dbQuery("SELECT * FROM `key` WHERE rtime IS NULL");
@@ -40,6 +41,10 @@ if (isset($_GET['id']))
 	{
 		echo json_encode(["error" => "Invalid card id."]);
 	}
+}
+else if (isset($_GET['deck']))
+{
+	logDeck();
 }
 else if (!isset($_GET['name']) || !preg_match('/[0-9a-zA-Z]*/', $_GET['name']))
 {
@@ -149,4 +154,21 @@ function getDBCards()
 	}
 
 	return $ret;
+}
+
+function logDeck()
+{
+	dbQuery(
+		"INSERT INTO deck (deck, format, class, cost, user, user_id, channel_id, `key`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+		[
+			$_GET['deck'],
+			isset($_GET['f']) ? $_GET['f'] : null,
+			isset($_GET['c']) ? $_GET['c'] : null,
+			isset($_GET['d']) ? $_GET['d'] : null,
+			isset($_GET['u']) ? $_GET['u'] : null,
+			isset($_GET['uid']) ? $_GET['uid'] : null,
+			isset($_GET['cid']) ? $_GET['cid'] : null,
+			isset($_GET['key']) ? $_GET['key'] : null,
+		]
+	);
 }
