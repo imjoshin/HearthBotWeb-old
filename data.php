@@ -124,6 +124,14 @@ function getCard($search_name, $collectible_only)
 				isset($_GET['key']) ? $_GET['key'] : null,
 			]
 		);
+
+		if (isset($_GET['conly']))
+		{
+			return [
+				'img' => $card['img']
+			];
+		}
+
 		return $card;
 	}
 
