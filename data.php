@@ -135,7 +135,18 @@ function getCard($search_name, $collectible_only)
 		return $card;
 	}
 
-	dbQuery("INSERT INTO search (search, card_id) VALUES (?, ?)", [$_GET['name'], -1]);
+	dbQuery(
+		"INSERT INTO search (search, card_id, type, user, user_id, channel_id, `key`) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		[
+			$_GET['name'],
+			-1,
+			isset($_GET['t']) ? $_GET['t'] : null,
+			isset($_GET['u']) ? $_GET['u'] : null,
+			isset($_GET['uid']) ? $_GET['uid'] : null,
+			isset($_GET['cid']) ? $_GET['cid'] : null,
+			isset($_GET['key']) ? $_GET['key'] : null,
+		]
+	);
 	return ['error' => 'Card not found.'];
 }
 

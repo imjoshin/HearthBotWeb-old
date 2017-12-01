@@ -18,7 +18,7 @@ class Card
 
 	public static function saveCard($form)
 	{
-		if (strlen($form['name']) == 0 || strlen($form['text']) == 0 || strlen($form['img']) == 0 || strlen($form['cost']) == 0 ||
+		if (strlen($form['name']) == 0 || strlen($form['img']) == 0 || strlen($form['cost']) == 0 ||
 			strlen($form['set']) == 0 || strlen($form['class']) == 0 || strlen($form['type']) == 0 || strlen($form['rarity']) == 0)
 		{
 			return array('success'=>false, 'output'=>'Check all fields.');
@@ -35,7 +35,22 @@ class Card
 		{
 			dbQuery(
 				"UPDATE card SET name = ?, class = ?, `set` = ?, type = ?, text = ?, rarity = ?, cost = ?, attack = ?, health = ?, img = ?, collectible = ?, expiration = ?, modified_by = ? WHERE id = ?",
-				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['attack'], $form['health'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id'], $form['id']]
+				[
+					$form['name'],
+					$form['class'],
+					$form['set'],
+					$form['type'],
+					$form['text'],
+					$form['rarity'],
+					!empty($form['cost']) ? $form['cost'] : null,
+					!empty($form['attack']) ? $form['attack'] : null,
+					!empty($form['health']) ? $form['health'] : null,
+					$form['img'],
+					$collectible,
+					$form['expiration'],
+					$_SESSION['user_id'],
+					$form['id']
+				]
 			);
 
 			$card = dbQuery("SELECT * FROM card WHERE id = ?", [$form['id']]);
@@ -45,7 +60,21 @@ class Card
 		{
 			dbQuery(
 				"INSERT INTO card (name, class, `set`, type, text, rarity, cost, attack, health, img, collectible, expiration, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				[$form['name'], $form['class'], $form['set'], $form['type'], $form['text'], $form['rarity'], $form['cost'], $form['attack'], $form['health'], $form['img'], $collectible, $form['expiration'], $_SESSION['user_id']]
+				[
+					$form['name'],
+					$form['class'],
+					$form['set'],
+					$form['type'],
+					$form['text'],
+					$form['rarity'],
+					!empty($form['cost']) ? $form['cost'] : null,
+					!empty($form['attack']) ? $form['attack'] : null,
+					!empty($form['health']) ? $form['health'] : null,
+					$form['img'],
+					$collectible,
+					$form['expiration'],
+					$_SESSION['user_id']
+				]
 			);
 
 			$card = dbQuery("SELECT * FROM card ORDER BY id DESC LIMIT 1");
