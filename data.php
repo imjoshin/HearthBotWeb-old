@@ -19,6 +19,12 @@ if (!isset($_GET['key']) || !in_array($_GET['key'], $keys))
 	return;
 }
 
+if (isset($_GET['refresh']))
+{
+	echo json_encode(refresh());
+	return;
+}
+
 if (isset($_GET['id']))
 {
 	$cards = json_decode(file_get_contents('cards.json'), true);
@@ -66,7 +72,8 @@ else
 
 function getCard($search_name, $collectible_only)
 {
-	$json_cards = json_decode(file_get_contents('cards.json'), true);
+	$json_file = (isset($_GET['dev']) ? 'test.json' : 'cards.json');
+	$json_cards = json_decode(file_get_contents($json_file), true);
 	$db_cards = getDBCards();
 	$cards = array_merge($json_cards, $db_cards);
 	$min_leven = PHP_INT_MAX;
@@ -76,7 +83,7 @@ function getCard($search_name, $collectible_only)
 	foreach ($cards as $id => $card)
 	{
 		// skip if we ignore token cards this card isn't collectible
-		if ($collectible_only && !$card['collectible'] || $card['cost'] == "hero")
+		if ($collectible_only && ($card['collectible'] == 0) || $card['cost'] === "hero")
 		{
 			continue;
 		}
@@ -108,10 +115,10 @@ function getCard($search_name, $collectible_only)
 		}
 	}
 
-	$card = $cards[$min_leven_index];
-
 	if ($min_leven_index >= 0)
 	{
+		$card = $cards[$min_leven_index];
+
 		dbQuery(
 			"INSERT INTO search (search, card_id, type, user, user_id, channel_id, `key`) VALUES (?, ?, ?, ?, ?, ?, ?)",
 			[
@@ -190,4 +197,83 @@ function logDeck()
 			isset($_GET['key']) ? $_GET['key'] : null,
 		]
 	);
+}
+
+function refresh()
+{
+	$curl = curl_init();
+	$url = "https://omgvamp-hearthstone-v1.p.mashape.com/cards";
+	curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, [
+	    "X-Mashape-Key: " . HEARTHSTONE_API_KEY
+	]);
+	$result = curl_exec($curl);
+
+	$sets = json_decode($result, true);
+	$print = array();
+
+	if (!is_array($sets))
+	{
+		return [
+			'error' => 'API return is not an array.',
+			'response' => var_export($file, 1)
+		];
+	}
+
+	foreach ($sets as $set)
+	{
+		foreach ($set as $card)
+		{
+			if (
+				$card['type'] != "Enchantment" &&
+				$card['type'] != "Hero Power"
+			)
+			{
+				if (isset($card['dbfId']) && ($card['type'] != "Hero" || $card['set'] != "Basic"))
+				{
+					$image = str_replace('http://wow.zamimg.com/images/hearthstone/cards/enus/original', 'http://media.services.zam.com/v1/media/byName/hs/cards/enus', $card['img']);
+					$print[intval($card['dbfId'])] = array(
+						'name' => $card['name'],
+						'set' => $card['cardSet'],
+						'type' => $card['type'],
+						'text' => !empty($card['text']) ? strip_tags($card['text']) : null,
+						'rarity' => $card['rarity'],
+						'cost' => (strpos($card['cardId'], 'HERO') === false ? $card['cost'] : "hero"),
+						'class' => $card['playerClass'],
+						'img' => $image,
+						'id' => intval($card['dbfId']),
+						'collectible' => (isset($card['collectible']) && $card['collectible']) ? 1 : 0
+					);
+
+					if ($print[intval($card['dbfId'])]['cost'] !== "hero" && $print[intval($card['dbfId'])]['type'] !== "Hero")
+					{
+						if (array_key_exists('health', $card))
+						{
+							$print[intval($card['dbfId'])]['health'] = $card['health'];
+						}
+
+						if (array_key_exists('attack', $card))
+						{
+							$print[intval($card['dbfId'])]['attack'] = $card['attack'];
+						}
+
+						if (array_key_exists('durability', $card))
+						{
+							$print[intval($card['dbfId'])]['health'] = $card['durability'];
+						}
+					}
+				}
+			}
+		}
+	}
+
+	$json_file = (isset($_GET['dev']) ? 'test.json' : 'cards.json');
+	file_put_contents($json_file, json_encode($print));
+
+	return [
+		'size' => count($print),
+		'cards' => $print
+	];
+
 }
